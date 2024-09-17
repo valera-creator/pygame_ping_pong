@@ -6,4 +6,4 @@
     Преподаватель: Адрианова Алла Михайловна
 </h4><hr>
 
-<p>Скачать библиотеки: ```pip install -r requirements.txt```</p><hr>
+```pip install -r requirements.txt```
