@@ -14,7 +14,6 @@ def end_game():
 
 def check_keyboard(event):
     if event.key == pygame.K_DOWN:
-        print('test')
         return 'вниз1'
     if event.key == pygame.K_UP:
         return 'вверх1'
@@ -33,11 +32,9 @@ class Ball(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = width // 2 - self.size // 2, height // 2 - self.size // 2
-        self.speed_x = 22
-        self.speed_y = 22
 
-    def update(self):
-        self.rect = self.rect.move(self.speed_x, self.speed_y)
+    def update(self, x, y):
+        self.rect = self.rect.move(x, y)
 
 
 if __name__ == '__main__':
@@ -46,9 +43,10 @@ if __name__ == '__main__':
     width, height = 800, 600
     fps = 60
     speed_nlo = 10
+    speed_player = 2
 
     pygame.init()
-    pygame.key.set_repeat(1, 10)
+    # pygame.key.set_repeat(1, 100) - зажатие клавы
 
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
@@ -62,10 +60,10 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
                 running = False
-            if event.type == pygame.KEYUP:
+            if event.type == pygame.KEYDOWN:
                 key = check_keyboard(event)
 
-        screen.fill((0, 0, 0))
+        screen.fill('black')
         all_sprites.draw(screen)
 
         clock.tick(fps)
