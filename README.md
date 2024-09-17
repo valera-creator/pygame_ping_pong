@@ -7,6 +7,7 @@
 </h4><hr>
 
 <p>Для установки библиотек:</p>
+
 ```
 pip install -r requirements.txt
 ```
