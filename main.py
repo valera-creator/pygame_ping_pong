@@ -3,13 +3,13 @@ import pygame
 
 def check_keyboard(event):
     if event.key == pygame.K_DOWN:
-        return 'низ'
+        return 'вниз1'
     if event.key == pygame.K_UP:
-        return 'вверх'
-    if event.key == pygame.K_LEFT:
-        return 'лево'
-    if event.key == pygame.K_RIGHT:
-        return 'право'
+        return 'вверх1'
+    if event.key == pygame.K_s:
+        return 'вниз1'
+    if event.key == pygame.K_w:
+        return 'вверх2'
 
 
 def main():
