@@ -48,7 +48,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join('assets', 'images', f'{color_image}.png'))
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
         self.mask = pygame.mask.from_surface(self.image)
-        self.speed_player = 6
+        self.speed_player = 7
         self.rect = self.image.get_rect()
 
         self.up = False
@@ -75,7 +75,7 @@ class Player(pygame.sprite.Sprite):
         """
 
         if self.need_go:
-
+            print(self.rect.y)
             if self.click and (self.up or self.down) and self.rect.y != 0 and self.rect.y != height - self.size:
                 self.click = False
                 self.up, self.down = self.down, self.up
@@ -106,7 +106,7 @@ class Player(pygame.sprite.Sprite):
 if __name__ == '__main__':
     running = True
 
-    width, height = 800, 600
+    width, height = 1000, 600
     fps = 60
 
     pygame.init()
