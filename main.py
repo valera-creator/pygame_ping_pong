@@ -16,12 +16,12 @@ def check_keyboard(event, player1, player2):
     if event.key == pygame.K_w:
         player1.need_go = True
         player1.click = True
-        # player1.update()
-        return 'управление 1 игрока'
+        return
+
     if event.key == pygame.K_UP:
         player2.need_go = True
         player2.click = True
-        return 'управление 2 игрока'
+        return
 
 
 class Ball(pygame.sprite.Sprite):
@@ -75,7 +75,6 @@ class Player(pygame.sprite.Sprite):
         """
 
         if self.need_go:
-            print(self.rect.y)
             if self.click and (self.up or self.down) and self.rect.y != 0 and self.rect.y != height - self.size:
                 self.click = False
                 self.up, self.down = self.down, self.up
