@@ -23,6 +23,9 @@ def check_keyboard(event, player1, player2):
         player2.click = True
         return
 
+    if event.key == pygame.K_SPACE:
+        return 'color'
+
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self, width, height):
@@ -107,6 +110,8 @@ if __name__ == '__main__':
 
     width, height = 1000, 600
     fps = 60
+    colors = {0: 'black', 1: 'red', 2: 'blue', 3: 'green', 4: 'orange', 5: 'fuchsia', 6: 'white'}
+    cur_color = 0
 
     pygame.init()
     # pygame.key.set_repeat(1, 100)
@@ -128,9 +133,11 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
                 running = False
             if event.type == pygame.KEYDOWN:
-                check_keyboard(event, player1, player2)
-
-        screen.fill('black')
+                res = check_keyboard(event, player1, player2)
+                if res == 'color':
+                    cur_color += 1
+        cur_color = cur_color % len(list(colors.keys()))
+        screen.fill(colors[cur_color])
         player_sprites.update()
         all_sprites.draw(screen)
 
