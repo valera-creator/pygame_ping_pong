@@ -1,6 +1,4 @@
 import pygame
-import random
-import os
 from player import Player
 from ball import Ball
 
@@ -10,8 +8,9 @@ def start_game():
     pass
 
 
-def end_game():
+def end_game(player_name):
     """функция для показа финального окна"""
+    pass
 
 
 def check_keyboard(event, player1, player2):
@@ -29,7 +28,7 @@ def check_keyboard(event, player1, player2):
         return 'color'
 
 
-def render(screen, size, x, y, text):
+def render_text(screen, size, x, y, text):
     font = pygame.font.Font(None, size)
     text = font.render(text, True, pygame.Color("red"))
     text_x = x
@@ -45,6 +44,7 @@ if __name__ == '__main__':
     colors = {0: 'black', 1: 'red', 2: 'blue', 3: 'green', 4: 'orange', 5: 'fuchsia', 6: 'white'}
     cur_color = 0
     start_seconds = 3  # задержка при начале раунда
+    goal_end = 5
 
     pygame.init()
 
@@ -65,6 +65,8 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.time.set_timer(pygame.USEREVENT, 600)
 
+    start_game()
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
@@ -83,9 +85,14 @@ if __name__ == '__main__':
 
         clock.tick(fps)
         if start_seconds > 0:
-            render(screen=screen, size=45, x=width // 2 - 10, y=100, text=str(start_seconds))
+            render_text(screen=screen, size=45, x=width // 2 - 10, y=100, text=str(start_seconds))
         if start_seconds < 0:
             ball.update()
         pygame.display.flip()
+
+        if player1.cnt_goals == goal_end:  # передаем в end_game какой игрок, чтобы потом указать на стороне победителя
+            end_game(player1.color_name)
+        elif player2.cnt_goals == goal_end:
+            end_game(player2.color_name)
 
     pygame.quit()

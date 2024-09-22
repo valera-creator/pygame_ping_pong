@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, color_image, width, height, all_sprites, player_sprites):
         super().__init__(all_sprites, player_sprites)
 
-        self.color_image = color_image
+        self.color_name = color_image
         self.size = 40
         self.image = pygame.image.load(os.path.join('assets', 'images', f'{color_image}.png'))
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.speed_player = 7
         self.height = height
         self.rect = self.image.get_rect()
+        self.cnt_goals = 0
 
         self.up = False
         self.down = False
