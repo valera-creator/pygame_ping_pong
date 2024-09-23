@@ -60,7 +60,7 @@ if __name__ == '__main__':
                      color_image='yellow', width=width, height=height)
 
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('Максим Зайцев')
+    pygame.display.set_caption('Ufo game')
 
     clock = pygame.time.Clock()
     pygame.time.set_timer(pygame.USEREVENT, 600)
