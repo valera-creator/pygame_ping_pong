@@ -97,3 +97,4 @@ if __name__ == '__main__':
             end_game(player2.color_name)
 
     pygame.quit()
+
