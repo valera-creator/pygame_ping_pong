@@ -1,5 +1,7 @@
 import pygame
 import os
+import random
+import math
 
 
 class Ball(pygame.sprite.Sprite):
@@ -15,3 +17,4 @@ class Ball(pygame.sprite.Sprite):
 
     def update(self):
         self.rect = self.rect.move(0, 0)  # рассчитать движение отскока
+

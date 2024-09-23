@@ -8,14 +8,14 @@ class Player(pygame.sprite.Sprite):
 
         self.color_name = color_image
         self.size = 40
-        self.image = pygame.image.load(os.path.join('assets', 'images', f'{color_image}.png'))
+        self.image = pygame.image.load(os.path.join('assets', 'images', f'{color_image}.png'))  # картинки нло
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
         self.mask = pygame.mask.from_surface(self.image)
         self.speed_player = 7
         self.height = height
         self.rect = self.image.get_rect()
-        self.cnt_goals = 0
 
+        self.cnt_goals = 0
         self.up = False
         self.down = False
         self.need_go = False
