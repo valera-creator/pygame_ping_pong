@@ -67,7 +67,6 @@ if __name__ == '__main__':
 
     start_game()
 
-
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
@@ -89,6 +88,7 @@ if __name__ == '__main__':
             render_text(screen=screen, size=45, x=width // 2 - 10, y=100, text=str(start_seconds))
         if start_seconds < 0:
             ball.update()
+
         pygame.display.flip()
 
         if player1.cnt_goals == goal_end:  # передаем в end_game какой игрок, чтобы потом указать на стороне победителя
@@ -97,4 +97,3 @@ if __name__ == '__main__':
             end_game(player2.color_name)
 
     pygame.quit()
-
