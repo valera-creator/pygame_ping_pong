@@ -1,10 +1,8 @@
 import pygame
-import os
-
-from pygame import mixer
 
 from player import Player
 from ball import Ball
+from border import Border
 
 
 def start_game():
@@ -51,18 +49,38 @@ if __name__ == '__main__':
     goal_end = 5
 
     pygame.init()
-    sound = mixer.Sound(os.path.join('assets', 'sounds', 'background.mp3'))
+
+    # sound = mixer.Sound(os.path.join('assets', 'sounds', 'background.mp3'))
+    # sound.play()
+    # mixer.music.set_volume(0.1)
 
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
     ball_sprites = pygame.sprite.Group()
     player_sprites = pygame.sprite.Group()
+    horizontal_borders = pygame.sprite.Group()
+    vertical_borders = pygame.sprite.Group()
 
     ball = Ball(width=width, height=height, all_sprites=all_sprites, ball_sprites=ball_sprites)
     player1 = Player(all_sprites=all_sprites, player_sprites=player_sprites,
                      color_image='violet', width=width, height=height)
     player2 = Player(all_sprites=all_sprites, player_sprites=player_sprites,
                      color_image='yellow', width=width, height=height)
+
+    # x
+    x = 55
+    y = 75
+
+    Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders, x1=x,
+           y1=y, x2=x, y2=height - y)
+    Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders,
+           x1=width - x, y1=y, x2=width - x, y2=height - y)
+    # y
+
+    Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders,
+           x1=x, y1=y, x2=width - x, y2=y)
+    Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders,
+           x1=x, y1=height - y, x2=width - x, y2=height - y)
 
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('PING-PONG game')
@@ -71,8 +89,7 @@ if __name__ == '__main__':
     pygame.time.set_timer(pygame.USEREVENT, 600)
 
     start_game()
-    sound.play()
-    mixer.music.set_volume(0.1)
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
@@ -84,12 +101,12 @@ if __name__ == '__main__':
             if event.type == pygame.USEREVENT and start_seconds >= 0:
                 start_seconds -= 1
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_5:
-                if sound.get_busy():
-                    sound.pause()
-                else:
-                    sound.unpause()
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_5:
+            #         if sound.get_busy():
+            #             sound.pause()
+            #         else:
+            #             sound.unpause()
 
         cur_color = cur_color % len(list(colors.keys()))
         screen.fill(colors[cur_color])
@@ -98,9 +115,9 @@ if __name__ == '__main__':
 
         clock.tick(fps)
         if start_seconds > 0:
-            render_text(screen=screen, size=45, x=width // 2 - 10, y=100, text=str(start_seconds))
+            render_text(screen=screen, size=45, x=width // 2 - 10, y=25, text=str(start_seconds))
         if start_seconds <= 0:
-            render_text(screen=screen, size=45, x=width // 2 - 20, y=100,
+            render_text(screen=screen, size=45, x=width // 2 - 20, y=25,
                         text=f'{player1.cnt_goals}-{player2.cnt_goals}')
             ball.update()
 
@@ -110,7 +127,5 @@ if __name__ == '__main__':
             end_game(player1.color_name)
         elif player2.cnt_goals == goal_end:
             end_game(player2.color_name)
-
-    sound.stop()
 
     pygame.quit()
