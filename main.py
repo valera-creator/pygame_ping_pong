@@ -86,7 +86,9 @@ if __name__ == '__main__':
         clock.tick(fps)
         if start_seconds > 0:
             render_text(screen=screen, size=45, x=width // 2 - 10, y=100, text=str(start_seconds))
-        if start_seconds < 0:
+        if start_seconds <= 0:
+            render_text(screen=screen, size=45, x=width // 2 - 20, y=100,
+                        text=f'{player1.cnt_goals}-{player2.cnt_goals}')
             ball.update()
 
         pygame.display.flip()
