@@ -45,7 +45,7 @@ if __name__ == '__main__':
     fps = 60
     colors = {0: 'black', 1: 'red', 2: 'blue', 3: 'green', 4: 'orange', 5: 'fuchsia', 6: 'white'}
     cur_color = 0
-    start_seconds = 3  # задержка при начале раунда
+    start_seconds = -1  # задержка при начале раунда
     goal_end = 5
 
     pygame.init()
@@ -63,13 +63,14 @@ if __name__ == '__main__':
 
     ball = Ball(width=width, height=height, all_sprites=all_sprites, ball_sprites=ball_sprites)
     player1 = Player(all_sprites=all_sprites, player_sprites=player_sprites,
-                     color_image='violet', width=width, height=height)
+                     color_image='blue', width=width, height=height, horizontal_borders=horizontal_borders)
     player2 = Player(all_sprites=all_sprites, player_sprites=player_sprites,
-                     color_image='yellow', width=width, height=height)
+                     color_image='red', width=width, height=height, horizontal_borders=horizontal_borders)
 
     # x
     x = 55
-    y = 75
+    y = 70
+    delta_y = 5
 
     Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders, x1=x,
            y1=y, x2=x, y2=height - y)
@@ -78,7 +79,7 @@ if __name__ == '__main__':
     # y
 
     Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders,
-           x1=x, y1=y, x2=width - x, y2=y)
+           x1=x, y1=y - delta_y, x2=width - x, y2=y - delta_y)
     Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders,
            x1=x, y1=height - y, x2=width - x, y2=height - y)
 
