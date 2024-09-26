@@ -11,7 +11,8 @@ def start_game(screen, width, height):
     screen.blit(fon, (0, 0))
     font = pygame.font.Font(None, 30)
     coords_y = 125
-    intro_text = ["ЗАСТАВКА", "", "Правила игры:", "", ""]
+    intro_text = ["ЦЕЛЬ:", "5 ГОЛОВ", "Правила игры:", "1) ЗАБИТЬ ГОЛ ПРОТИВНИКУ", "2) НАСЛАЖДАТЬСЯ ИГРОЙ", "", "",
+                  "Авторы:", "Ларионов Валерий", "Зайцев Максим"]
     for line in intro_text:
         string_rendered = font.render(line, True, pygame.Color('black'))
         intro_rect = string_rendered.get_rect()
@@ -61,7 +62,7 @@ def render_text(screen, size, x, y, text):
 if __name__ == '__main__':
     running = True
 
-    width, height = 1050, 600
+    width, height = 1050, 600  # 1280 720
     fps = 60
     colors = {0: 'black', 1: 'red', 2: 'blue', 3: 'green', 4: 'orange', 5: 'fuchsia', 6: 'white'}
     cur_color = 0
