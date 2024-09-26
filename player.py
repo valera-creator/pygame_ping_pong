@@ -30,11 +30,14 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.x, self.rect.y = dict_coords[color_image]
 
-    def check_intersection_walls(self, ball_sprites):
-        for elem in ball_sprites:
+    def check_intersection_walls(self):
+        for elem in self.horizontal_borders:
             if pygame.sprite.collide_mask(self, elem):
                 return True
         return False
+
+    def check_distance(self, wall_sprites):
+        pass
 
     def update(self):
         """
@@ -57,7 +60,7 @@ class Player(pygame.sprite.Sprite):
 
             if self.up:  # если движется вверх
                 self.rect.y -= self.speed_player
-                if self.check_intersection_walls(self.horizontal_borders):
+                if self.check_intersection_walls():
                     self.rect.y += self.speed_player
                     self.need_go = False
                     self.down = True
@@ -66,7 +69,7 @@ class Player(pygame.sprite.Sprite):
 
             if self.down:  # если движется вниз
                 self.rect.y += self.speed_player
-                if self.check_intersection_walls(self.horizontal_borders):
+                if self.check_intersection_walls():
                     self.rect.y -= self.speed_player
                     self.need_go = False
                     self.up = True
