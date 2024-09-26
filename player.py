@@ -11,7 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join('assets', 'images', f'{color_image}.png'))  # картинки нло
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
         self.mask = pygame.mask.from_surface(self.image)
-        self.speed_player = 8
+        self.speed_player = 6
         self.height = height
         self.rect = self.image.get_rect()
         self.width = width
@@ -45,10 +45,13 @@ class Player(pygame.sprite.Sprite):
         self.up означает движение вверх
         self.down означает движение вниз
         self.need_go означает, что необходимо совершить движение у игрока
+
+        y1, y2 - когда не нужно менять направления из-за багов с границами сверху и снизу
         """
+        y1, y2 = 28, 372
 
         if self.need_go:
-            if self.click and (self.up or self.down) and 40 < self.rect.y < 376:
+            if self.click and (self.up or self.down) and y1 < self.rect.y < y2:
                 self.click = False
                 self.up, self.down = self.down, self.up
             self.click = False
