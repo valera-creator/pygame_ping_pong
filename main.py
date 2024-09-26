@@ -5,7 +5,7 @@ from ball import Ball
 from border import Border
 
 
-def start_game(width, height):
+def start_game(screen, width, height):
     bkground = os.path.join('assets', 'images', 'phon.jpg')
     fon = pygame.transform.scale(pygame.image.load(bkground), (width, height))
     screen.blit(fon, (0, 0))
@@ -17,19 +17,17 @@ def start_game(width, height):
         intro_rect = string_rendered.get_rect()
         coords_y += 5
         intro_rect.top = coords_y
-        intro_rect.x = 140
+        intro_rect.x = width // 2.5
         coords_y += intro_rect.height
         screen.blit(string_rendered, intro_rect)
 
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 quit()
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                 return
         pygame.display.flip()
-
-
 
 
 def end_game(player_name):
@@ -67,10 +65,16 @@ if __name__ == '__main__':
     fps = 60
     colors = {0: 'black', 1: 'red', 2: 'blue', 3: 'green', 4: 'orange', 5: 'fuchsia', 6: 'white'}
     cur_color = 0
-    start_seconds = -1  # задержка при начале раунда
+    start_seconds = 3  # задержка при начале раунда
     goal_end = 5
 
     pygame.init()
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption('PING-PONG game')
+
+    clock = pygame.time.Clock()
+    pygame.time.set_timer(pygame.USEREVENT, 600)
+    start_game(screen, width, height)
 
     # sound = mixer.Sound(os.path.join('assets', 'sounds', 'background.mp3'))
     # sound.play()
@@ -106,17 +110,9 @@ if __name__ == '__main__':
     Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders,
            x1=x, y1=height - y, x2=width - x, y2=height - y)
 
-    screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('PING-PONG game')
-
-    clock = pygame.time.Clock()
-    pygame.time.set_timer(pygame.USEREVENT, 600)
-
-    start_game(width, height)
-
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
+            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 running = False
             if event.type == pygame.KEYDOWN and start_seconds <= 0:
                 res = check_keyboard(event, player1, player2)
