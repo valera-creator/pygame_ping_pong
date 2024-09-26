@@ -68,14 +68,15 @@ if __name__ == '__main__':
                      color_image='red', width=width, height=height, horizontal_borders=horizontal_borders)
 
     # x
-    x = 55
+    x = 56
     y = 70
+    delta_x = 4
     delta_y = 5
 
     Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders, x1=x,
            y1=y, x2=x, y2=height - y)
     Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders,
-           x1=width - x, y1=y, x2=width - x, y2=height - y)
+           x1=width - x - delta_x, y1=y, x2=width - x - delta_x, y2=height - y)
     # y
 
     Border(all_sprites=all_sprites, horizontal_borders=horizontal_borders, vertical_borders=vertical_borders,

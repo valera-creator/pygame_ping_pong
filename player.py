@@ -45,7 +45,7 @@ class Player(pygame.sprite.Sprite):
         """
 
         if self.need_go:
-            if self.click and (self.up or self.down) and self.rect.y != 32 and self.rect.y != 376:
+            if self.click and (self.up or self.down) and 40 < self.rect.y < 376:
                 self.click = False
                 self.up, self.down = self.down, self.up
             self.click = False
