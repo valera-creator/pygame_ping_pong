@@ -1,13 +1,35 @@
 import pygame
-
+import os
 from player import Player
 from ball import Ball
 from border import Border
 
 
-def start_game():
-    """функция для показа стартового окна"""
-    pass
+def start_game(width, height):
+    bkground = os.path.join('assets', 'images', 'phon.jpg')
+    fon = pygame.transform.scale(pygame.image.load(bkground), (width, height))
+    screen.blit(fon, (0, 0))
+    font = pygame.font.Font(None, 30)
+    coords_y = 125
+    intro_text = ["ЗАСТАВКА", "", "Правила игры:", "", ""]
+    for line in intro_text:
+        string_rendered = font.render(line, True, pygame.Color('black'))
+        intro_rect = string_rendered.get_rect()
+        coords_y += 5
+        intro_rect.top = coords_y
+        intro_rect.x = 140
+        coords_y += intro_rect.height
+        screen.blit(string_rendered, intro_rect)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                return
+        pygame.display.flip()
+
+
 
 
 def end_game(player_name):
@@ -90,7 +112,7 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.time.set_timer(pygame.USEREVENT, 600)
 
-    start_game()
+    start_game(width, height)
 
     while running:
         for event in pygame.event.get():
