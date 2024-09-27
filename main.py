@@ -5,21 +5,47 @@ from ball import Ball
 from border import Border
 
 
-def start_game(screen, width, height):
-    bkground = os.path.join('assets', 'images', 'phon.jpg')
+def start_game(screen, width, height, goals):
+    bkground = os.path.join('assets', 'images', 'phon2.jpg')
     fon = pygame.transform.scale(pygame.image.load(bkground), (width, height))
     screen.blit(fon, (0, 0))
-    font = pygame.font.Font(None, 30)
-    coords_y = 125
-    intro_text = ["ЦЕЛЬ:", "5 ГОЛОВ", "Правила игры:", "1) ЗАБИТЬ ГОЛ ПРОТИВНИКУ", "2) НАСЛАЖДАТЬСЯ ИГРОЙ", "", "",
-                  "Авторы:", "Ларионов Валерий", "Зайцев Максим"]
+    font = pygame.font.Font(None, 35)
+    coords_y = 85
+
+    text_right = ['Авторы:', 'Ларионов Валерий', 'Зайцев Максим']
+    text_middle = ['НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ']
+    intro_text = [
+        "ЦЕЛЬ:",
+        f"{goals} ГОЛОВ",
+        "",
+        "Правила игры:",
+        "1) ЗАБИТЬ ГОЛ ПРОТИВНИКУ",
+        "2) НАСЛАЖДАТЬСЯ ИГРОЙ",
+        "",
+        "",
+        "Авторы:",
+        "Ларионов Валерий",
+        "Зайцев Максим",
+        "",
+        "",
+        "НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ"
+    ]
+
     for line in intro_text:
-        string_rendered = font.render(line, True, pygame.Color('black'))
+        string_rendered = font.render(line, True, pygame.Color('WHITE'))
         intro_rect = string_rendered.get_rect()
-        coords_y += 5
+
         intro_rect.top = coords_y
-        intro_rect.x = width // 2.5
+        coords_y += 5
+
+        if line in text_right:
+            intro_rect.x = 750
+        elif line in text_middle:
+            intro_rect.x = 200
+        else:
+            intro_rect.x = 100
         coords_y += intro_rect.height
+
         screen.blit(string_rendered, intro_rect)
 
     while True:
@@ -75,7 +101,7 @@ if __name__ == '__main__':
 
     clock = pygame.time.Clock()
     pygame.time.set_timer(pygame.USEREVENT, 600)
-    start_game(screen, width, height)
+    start_game(screen, width, height, goal_end)
 
     # sound = mixer.Sound(os.path.join('assets', 'sounds', 'background.mp3'))
     # sound.play()
