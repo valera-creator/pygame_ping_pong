@@ -6,7 +6,7 @@ from border import Border
 
 
 def start_game(screen, width, height, goals):
-    bkground = os.path.join('assets', 'images', 'phon2.jpg')
+    bkground = os.path.join('assets', 'images', 'phon.jpg')
     fon = pygame.transform.scale(pygame.image.load(bkground), (width, height))
     screen.blit(fon, (0, 0))
     font = pygame.font.Font(None, 35)
