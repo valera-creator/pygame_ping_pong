@@ -6,6 +6,12 @@ from border import Border
 
 
 def start_game(screen, width, height, goals):
+    """
+    фразы в text_right нужны, чтобы отобразить их справа
+    фразы в text_middle нужны, тчобы отобразить по середине
+    intro_text - все фразы стартового окна
+    """
+
     bkground = os.path.join('assets', 'images', 'phon.jpg')
     fon = pygame.transform.scale(pygame.image.load(bkground), (width, height))
     screen.blit(fon, (0, 0))
@@ -26,8 +32,7 @@ def start_game(screen, width, height, goals):
         "Авторы:",
         "Ларионов Валерий",
         "Зайцев Максим",
-        "",
-        "",
+        "", "", "", "", "", "",
         "НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ"
     ]
 
@@ -39,9 +44,9 @@ def start_game(screen, width, height, goals):
         coords_y += 5
 
         if line in text_right:
-            intro_rect.x = 750
+            intro_rect.x = 950
         elif line in text_middle:
-            intro_rect.x = 200
+            intro_rect.x = 300
         else:
             intro_rect.x = 100
         coords_y += intro_rect.height
@@ -88,7 +93,7 @@ def render_text(screen, size, x, y, text):
 if __name__ == '__main__':
     running = True
 
-    width, height = 1050, 600  # 1280 720
+    width, height = 1280, 720
     fps = 60
     colors = {0: 'black', 1: 'red', 2: 'blue', 3: 'green', 4: 'orange', 5: 'fuchsia', 6: 'white'}
     cur_color = 0

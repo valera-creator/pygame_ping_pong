@@ -48,7 +48,7 @@ class Player(pygame.sprite.Sprite):
 
         y1, y2 - когда не нужно менять направления из-за багов с границами сверху и снизу
         """
-        y1, y2 = 28, 372
+        y1, y2 = 29, 494
 
         if self.need_go:
             if self.click and (self.up or self.down) and y1 < self.rect.y < y2:
