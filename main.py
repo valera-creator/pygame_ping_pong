@@ -82,11 +82,9 @@ def check_keyboard(event, player1, player2):
         return 'color'
 
 
-def render_text(screen, size, x, y, text):
+def render_text(screen, size, text_x, text_y, text):
     font = pygame.font.Font(None, size)
     text = font.render(text, True, pygame.Color("red"))
-    text_x = x
-    text_y = y
     screen.blit(text, (text_x, text_y))
 
 
@@ -167,9 +165,9 @@ if __name__ == '__main__':
 
         clock.tick(fps)
         if start_seconds > 0:
-            render_text(screen=screen, size=45, x=width // 2 - 10, y=25, text=str(start_seconds))
+            render_text(screen=screen, size=45, text_x=width // 2 - 10, text_y=25, text=str(start_seconds))
         if start_seconds <= 0:
-            render_text(screen=screen, size=45, x=width // 2 - 20, y=25,
+            render_text(screen=screen, size=45, text_x=width // 2 - 20, text_y=25,
                         text=f'{player1.cnt_goals}-{player2.cnt_goals}')
             ball.update()
 
