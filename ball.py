@@ -17,4 +17,3 @@ class Ball(pygame.sprite.Sprite):
 
     def update(self):
         self.rect = self.rect.move(0, 0)  # рассчитать движение отскока
-

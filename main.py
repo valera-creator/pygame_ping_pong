@@ -26,10 +26,10 @@ class Game:
         self.goal_end = 5
 
         self.sound_goal = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'goal.mp3'))
-        self.sound_goal.set_volume(0.2)
+        self.sound_goal.set_volume(0.15)
 
-        self.sound_winner = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'goal.mp3'))
-        self.sound_winner.set_volume(0.2)
+        self.sound_winner = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'winner.mp3'))
+        self.sound_winner.set_volume(0.35)
 
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.running = True
@@ -163,7 +163,7 @@ class Game:
         return False
 
     def make_event_goal(self, player):
-        self.start_seconds = 3
+        self.start_seconds = 6
         self.ball.rect.x, self.ball.rect.y = (self.width // 2 - self.ball.size // 2,
                                               self.height // 2 - self.ball.size // 2)
         player.cnt_goals += 1
@@ -174,7 +174,7 @@ class Game:
         self.player1.up = self.player1.down = False
         self.player2.up = self.player2.down = False
         self.player1.click = self.player2.click = False
-        pygame.time.set_timer(pygame.USEREVENT, 850)
+        pygame.time.set_timer(pygame.USEREVENT, 1000)
         self.sound_goal.play()
         pygame.display.flip()
 
@@ -206,7 +206,7 @@ class Game:
             self.render_text(size=45, text='WINNER', text_x=self.player1.rect.x + 47, text_y=100, color='blue')
         else:
             self.render_text(size=45, text='WINNER', text_x=self.player2.rect.x + 23, text_y=100, color='red')
-        self.render_text(size=35, text='НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ', text_x=self.width // 2 - 300,
+        self.render_text(size=35, text='НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ', text_x=self.width // 2 - 320,
                          text_y=self.height // 2 + 200, color='white')
         self.sound_winner.play()
         pygame.display.flip()
