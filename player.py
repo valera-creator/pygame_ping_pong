@@ -23,12 +23,12 @@ class Player(pygame.sprite.Sprite):
         self.need_go = False
         self.click = False
 
-        dict_coords = {
+        self.dict_coords = {
             'blue': (self.width // 2 - self.width // 4 - 120 - self.size // 2, self.height // 2 - self.size // 2),
             'red': (self.width // 2 + self.width // 4 + 50, self.height // 2 - self.size // 2)
         }
 
-        self.rect.x, self.rect.y = dict_coords[color_image]
+        self.rect.x, self.rect.y = self.dict_coords[self.color_name]
 
     def check_intersection_walls(self):
         for elem in self.horizontal_borders:
@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         self.down означает движение вниз
         self.need_go означает, что необходимо совершить движение у игрока
 
-        y1, y2 - когда не нужно менять направления из-за багов с границами сверху и снизу
+        y1, y2 - когда не нужно менять направления
         """
         y1, y2 = 29, 494
 
