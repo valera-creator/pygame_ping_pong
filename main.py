@@ -21,19 +21,13 @@ def check_keyboard(event):
         return 'color'
 
 
-def render_text(screen, size, text_x, text_y, text):
-    font = pygame.font.Font(None, size)
-    text = font.render(text, True, pygame.Color("red"))
-    screen.blit(text, (text_x, text_y))
-
-
 class Game:
     def __init__(self):
         self.width, self.height = 1280, 720
         self.fps = 60
         self.colors = {0: 'black', 1: 'red', 2: 'blue', 3: 'green', 4: 'orange', 5: 'fuchsia', 6: 'white'}
         self.cur_color = 0
-        self.start_seconds = 4  # задержка при начале раунда
+        self.start_seconds = 3  # задержка при начале раунда
         self.goal_end = 5
 
         self.sound_goal = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'goal.mp3'))
@@ -137,12 +131,17 @@ class Game:
 
     def make_even_start_second(self):
         if self.start_seconds > 0:
-            render_text(screen=self.screen, size=45, text_x=self.width // 2 - 10, text_y=25,
-                        text=str(self.start_seconds))
+            self.render_text(size=45, text_x=self.width // 2 - 10, text_y=25,
+                             text=str(self.start_seconds))
         if self.start_seconds <= 0:
-            render_text(screen=self.screen, size=45, text_x=self.width // 2 - 20, text_y=25,
-                        text=f'{self.player1.cnt_goals}-{self.player2.cnt_goals}')
+            self.render_text(size=45, text_x=self.width // 2 - 20, text_y=25,
+                             text=f'{self.player1.cnt_goals}-{self.player2.cnt_goals}')
             self.ball.update()
+
+    def render_text(self, size, text_x, text_y, text):
+        font = pygame.font.Font(None, size)
+        text = font.render(text, True, pygame.Color("red"))
+        self.screen.blit(text, (text_x, text_y))
 
     def make_even_keyboard(self, player):
         if player == 'player1':
@@ -159,14 +158,14 @@ class Game:
         """возвращает объектное представление игрока, который забил гол"""
         for elem in self.vertical_borders:
             if pygame.sprite.collide_mask(self.ball, elem):
-                if elem.rect.x < self.width:
+                if elem.rect.x < self.width // 2:
                     return self.player2
                 else:
                     return self.player1
         return False
 
     def make_event_goal(self, player):
-        self.start_seconds = 4
+        self.start_seconds = 3
         self.ball.rect.x, self.ball.rect.y = (self.width // 2 - self.ball.size // 2,
                                               self.height // 2 - self.ball.size // 2)
         player.cnt_goals += 1
@@ -179,6 +178,7 @@ class Game:
         self.player1.click = self.player2.click = False
         pygame.time.set_timer(pygame.USEREVENT, 850)
         self.sound_goal.play()
+        pygame.display.flip()
 
     def check_end_game(self):
         """возвращает строкое представление игрока, который выиграл"""
