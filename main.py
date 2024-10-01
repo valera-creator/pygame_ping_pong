@@ -26,30 +26,47 @@ class Game:
         self.start_seconds = 3  # задержка при начале раунда
         self.goal_end = 5
 
+        # звук гола
         self.sound_goal = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'goal.mp3'))
         self.sound_goal.set_volume(0.15)
 
+        # звук победы
         self.sound_winner = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'winner.mp3'))
         self.sound_winner.set_volume(0.35)
 
+        # музыка на фон
         self.music_volume = 0.05
         self.step_volume_music = 0.05
 
+        self.index_music = 2
+        self.musics = {
+            0: os.path.join('assets', 'sounds', 'fon1.mp3'),
+            1: os.path.join('assets', 'sounds', 'fon2.mp3'),
+            2: os.path.join('assets', 'sounds', 'fon3.mp3'),
+            3: os.path.join('assets', 'sounds', 'fon4.mp3'),
+            4: os.path.join('assets', 'sounds', 'fon5.mp3')
+        }
+
         pygame.mixer.init()
-        pygame.mixer.music.load(os.path.join('assets', 'sounds', 'fon.mp3'))
+        pygame.mixer.music.load(self.musics[self.index_music])
         pygame.mixer.music.set_volume(self.music_volume)
         pygame.mixer.music.play(-1)
+
+        pygame.display.set_caption('PING-PONG game')
+        pygame.time.set_timer(pygame.USEREVENT, 600)
 
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.running = True
         self.clock = pygame.time.Clock()
 
+        # спрайты
         self.all_sprites = pygame.sprite.Group()
         self.ball_sprites = pygame.sprite.Group()
         self.player_sprites = pygame.sprite.Group()
         self.horizontal_borders = pygame.sprite.Group()
         self.vertical_borders = pygame.sprite.Group()
 
+        # мяч, игроки, стенки
         self.ball = Ball(width=self.width, height=self.height, all_sprites=self.all_sprites,
                          ball_sprites=self.ball_sprites)
         self.player1 = Player(all_sprites=self.all_sprites, player_sprites=self.player_sprites,
@@ -132,7 +149,14 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     quit()
-                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+
+                if event.type == pygame.MOUSEWHEEL:
+                    self.adjust_volume_sound(event.y)
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.replace_music(event.button)
+
+                if event.type == pygame.KEYDOWN:
                     return
             pygame.display.flip()
 
@@ -205,6 +229,7 @@ class Game:
         self.player1.up = self.player1.down = False
         self.player2.up = self.player2.down = False
         self.player1.click = self.player2.click = False
+
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         pygame.mixer.music.pause()
         self.sound_goal.play()
@@ -222,7 +247,6 @@ class Game:
         окно победы и ожидание дальнейших действий от игроков
 
         """
-        pygame.mixer.music.unpause()
 
         self.player1.need_go = False
         self.player2.need_go = False
@@ -249,6 +273,7 @@ class Game:
             self.render_text(size=45, text='WINNER', text_x=self.player2.rect.x + 23, text_y=100, color='red')
         self.render_text(size=35, text='НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ', text_x=self.width // 2 - 320,
                          text_y=self.height // 2 + 200, color='white')
+        pygame.mixer.music.pause()
         self.sound_winner.play()
         pygame.display.flip()
 
@@ -256,9 +281,10 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     quit()
-                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                elif event.type == pygame.KEYDOWN:
                     self.player1.cnt_goals = self.player2.cnt_goals = 0
                     self.sound_winner.stop()
+                    pygame.mixer.music.unpause()
                     return
             pygame.display.flip()
 
@@ -276,9 +302,24 @@ class Game:
         self.music_volume = round(self.music_volume, 3)
         pygame.mixer.music.set_volume(self.music_volume)
 
+    def replace_music(self, btn):
+        """
+        :param btn:  какая кнопка мыши нажата
+        btn = 1 - левая
+        btn = 3 - правая
+        is_play - надо ли воспроизводить
+        """
+
+        if btn == 1:
+            self.index_music = (self.index_music + 1) % len(list(self.musics.keys()))
+            pygame.mixer.music.load(self.musics[self.index_music])
+            pygame.mixer.music.play(-1)
+        elif btn == 3:
+            self.index_music = (self.index_music - 1) % len(list(self.musics.keys()))
+            pygame.mixer.music.load(self.musics[self.index_music])
+            pygame.mixer.music.play(-1)
+
     def run(self):
-        pygame.display.set_caption('PING-PONG game')
-        pygame.time.set_timer(pygame.USEREVENT, 600)
         self.start_game()
 
         while self.running:
@@ -288,6 +329,10 @@ class Game:
 
                 if event.type == pygame.MOUSEWHEEL:
                     self.adjust_volume_sound(event.y)
+
+                if event.type == pygame.MOUSEBUTTONDOWN and self.start_seconds <= 0 or \
+                        event.type == pygame.MOUSEBUTTONDOWN and self.player2.cnt_goals == self.player1.cnt_goals == 0:
+                    self.replace_music(event.button)
 
                 if event.type == pygame.KEYDOWN:
                     res = check_keyboard(event)
