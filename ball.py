@@ -13,7 +13,7 @@ class Ball(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = width // 2 - self.size // 2, height // 2 - self.size // 2
-        self.speed_ball = 4
+        self.speed_ball = 0
 
     def update(self):
-        self.rect = self.rect.move(0, 0)  # рассчитать движение отскока
+        self.rect = self.rect.move(self.speed_ball, 0)  # рассчитать движение отскока

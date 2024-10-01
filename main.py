@@ -31,6 +31,14 @@ class Game:
         self.sound_winner = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'winner.mp3'))
         self.sound_winner.set_volume(0.35)
 
+        self.music_volume = 0.05
+        self.step_volume_music = 0.05
+
+        pygame.mixer.init()
+        pygame.mixer.music.load(os.path.join('assets', 'sounds', 'fon.mp3'))
+        pygame.mixer.music.set_volume(self.music_volume)
+        pygame.mixer.music.play(-1)
+
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.running = True
         self.clock = pygame.time.Clock()
@@ -134,6 +142,7 @@ class Game:
         if self.start_seconds <= 0:
             self.render_text(size=45, text_x=self.width // 2 - 20, text_y=25,
                              text=f'{self.player1.cnt_goals}-{self.player2.cnt_goals}', color='orange')
+            pygame.mixer.music.unpause()
             self.ball.update()
 
     def render_text(self, size, text_x, text_y, text, color='red'):
@@ -175,6 +184,7 @@ class Game:
         self.player2.up = self.player2.down = False
         self.player1.click = self.player2.click = False
         pygame.time.set_timer(pygame.USEREVENT, 1000)
+        pygame.mixer.music.pause()
         self.sound_goal.play()
         pygame.display.flip()
 
@@ -182,6 +192,7 @@ class Game:
         return self.player1.cnt_goals == self.goal_end or self.player2.cnt_goals == self.goal_end
 
     def make_event_end_game(self):
+        pygame.mixer.music.unpause()
 
         self.player1.need_go = False
         self.player2.need_go = False
@@ -221,16 +232,29 @@ class Game:
                     return
             pygame.display.flip()
 
-    def run(self):
-        self.start_game()
-        pygame.display.set_caption('PING-PONG game')
+    def adjust_volume_sound(self, direction):
+        """если курсор мыши вверх, то прибавляем громкость, если курсор мыши вниз, то убавляем"""
+        if direction == 1:
+            if round(self.music_volume + self.step_volume_music, 3) <= 1:
+                self.music_volume += self.step_volume_music
+        else:
+            if round(self.music_volume - self.step_volume_music, 3) >= 0:
+                self.music_volume -= self.step_volume_music
+        self.music_volume = round(self.music_volume, 3)
+        pygame.mixer.music.set_volume(self.music_volume)
 
+    def run(self):
+        pygame.display.set_caption('PING-PONG game')
         pygame.time.set_timer(pygame.USEREVENT, 600)
+        self.start_game()
 
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     self.running = False
+
+                if event.type == pygame.MOUSEWHEEL:
+                    self.adjust_volume_sound(event.y)
 
                 if event.type == pygame.KEYDOWN:
                     res = check_keyboard(event)
