@@ -214,6 +214,14 @@ class Game:
         return self.player1.cnt_goals == self.goal_end or self.player2.cnt_goals == self.goal_end
 
     def make_event_end_game(self):
+        """
+        музыка на паузу
+        остановка движений игроков и возвращение их на свои места
+        изменение таймера и отмена звука гола (вместо нее будет звук победы)
+        отрисовка спрайтов, надписи побителя
+        окно победы и ожидание дальнейших действий от игроков
+
+        """
         pygame.mixer.music.unpause()
 
         self.player1.need_go = False
