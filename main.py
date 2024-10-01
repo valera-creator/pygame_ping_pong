@@ -6,6 +6,7 @@ from border import Border
 
 
 def check_keyboard(event):
+    """проверяет нажатие игроками управление своим объектом или нажатие изменения цвета фона"""
     if event.key == pygame.K_w:
         return 'player1'
 
@@ -136,6 +137,11 @@ class Game:
             pygame.display.flip()
 
     def make_event_start_second(self):
+        """
+        либо показывает либо таймер, если тикает таймер до начала раунда,
+        либо показывает счет игры, снимает с паузы музыку и обновляет координаты мяча
+        """
+
         if self.start_seconds > 0:
             self.render_text(size=45, text_x=self.width // 2 - 10, text_y=25,
                              text=str(self.start_seconds), color='green')
@@ -151,6 +157,11 @@ class Game:
         self.screen.blit(text, (text_x, text_y))
 
     def make_event_keyboard(self, player):
+        """
+        включает у объекта атрибуты-флаги движения и смены направления движения
+        :param player: строковое представление игрока
+        """
+
         if player == 'player1':
             self.player1.need_go = True
             self.player1.click = True
@@ -162,7 +173,10 @@ class Game:
             return
 
     def check_goal(self):
-        """возвращает объектное представление игрока, который забил гол или False, если гола нет"""
+        """
+        возвращает объектное представление игрока, который забил гол или False, если гола нет
+        """
+
         for elem in self.vertical_borders:
             if pygame.sprite.collide_mask(self.ball, elem):
                 if elem.rect.x < self.width // 2:
@@ -172,6 +186,14 @@ class Game:
         return False
 
     def make_event_goal(self, player):
+        """
+        установление таймера до начала раунда
+        установление позиций для мяча и игроков
+        отмена движений у игроков
+        изменение времени и взаимодействие со звуком/музыкой
+        :param player: объектное представление игрока для увеличение счетчика гола
+        """
+
         self.start_seconds = 6
         self.ball.rect.x, self.ball.rect.y = (self.width // 2 - self.ball.size // 2,
                                               self.height // 2 - self.ball.size // 2)
@@ -233,7 +255,10 @@ class Game:
             pygame.display.flip()
 
     def adjust_volume_sound(self, direction):
-        """если курсор мыши вверх, то прибавляем громкость, если курсор мыши вниз, то убавляем"""
+        """
+        если курсор мыши вверх, то прибавляем громкость, если курсор мыши вниз, то убавляем
+        """
+
         if direction == 1:
             if round(self.music_volume + self.step_volume_music, 3) <= 1:
                 self.music_volume += self.step_volume_music
