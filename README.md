@@ -13,6 +13,7 @@ pip install -r requirements.txt
 ```
 
 <hr>
+<h4 align="center">Игра</h4>
 <ul>
     <li>Наш проект - игра "Пинг-понг", реализованная с помощью библиотеки pygame для окна размером 1280x720.</li>
     <li>Два игрока играют на одной клавитуре.</li>
@@ -24,6 +25,5 @@ pip install -r requirements.txt
 </ul>
 <hr>
 
-<h4 align="center">Игра</h4>
 <img src="assets/images/image_readme.png">
 <hr>
