@@ -36,7 +36,11 @@ class Game:
 
         # музыка на фон
         self.music_volume = 0.05
-        self.step_volume_music = 0.05
+        self.step_volume_music = 0.025
+
+        # звук удара мяча
+        self.sound_rebound = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'rebound.mp3'))
+        self.sound_rebound.set_volume(0.20)
 
         self.index_music = 2
         self.musics = {
