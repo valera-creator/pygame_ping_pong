@@ -36,9 +36,6 @@ class Player(pygame.sprite.Sprite):
                 return True
         return False
 
-    def check_distance(self, wall_sprites):
-        pass
-
     def update(self):
         """
         self.click используется для смены направления движения на противоположное

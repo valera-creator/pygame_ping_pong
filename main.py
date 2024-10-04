@@ -72,7 +72,8 @@ class Game:
 
         # мяч, игроки, стенки
         self.ball = Ball(width=self.width, height=self.height, all_sprites=self.all_sprites,
-                         ball_sprites=self.ball_sprites)
+                         ball_sprites=self.ball_sprites, sound=self.sound_rebound, wall_sprites=self.horizontal_borders,
+                         player_sprites=self.player_sprites)
         self.player1 = Player(all_sprites=self.all_sprites, player_sprites=self.player_sprites,
                               color_image='blue', width=self.width, height=self.height,
                               horizontal_borders=self.horizontal_borders)
@@ -349,7 +350,11 @@ class Game:
 
             self.cur_color = self.cur_color % len(list(self.colors.keys()))
             self.screen.fill(self.colors[self.cur_color])
-            self.player_sprites.update()
+
+            if self.start_seconds <= 0:
+                self.ball_sprites.update()
+                self.player_sprites.update()
+
             self.all_sprites.draw(self.screen)
 
             self.clock.tick(self.fps)
