@@ -16,10 +16,8 @@ class Ball(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = width // 2 - self.size // 2, height // 2 - self.size // 2
-        self.speed_ball = 3
-        self.angle = random.randint(35, 60)
-        self.dx = math.cos(math.radians(self.angle))
-        self.dy = math.sin(math.radians(self.angle))
+        self.speed_ball = 6
+        self.make_move_value()
 
     def update(self):
         for elem in self.player_sprites:
@@ -33,3 +31,8 @@ class Ball(pygame.sprite.Sprite):
                 self.sound.play()
 
         self.rect = self.rect.move(self.dx * self.speed_ball, self.dy * self.speed_ball)  # рассчитать движение отскока
+
+    def make_move_value(self):
+        self.angle = random.randint(25, 60)
+        self.dx = math.cos(math.radians(self.angle)) * random.choice((-1, 1))
+        self.dy = math.sin(math.radians(self.angle)) * random.choice((-1, 1))

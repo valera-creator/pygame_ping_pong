@@ -1,8 +1,10 @@
 import pygame
 import os
+import math
 from player import Player
 from ball import Ball
 from border import Border
+from random import randint, choice
 
 
 def check_keyboard(event):
@@ -50,6 +52,7 @@ class Game:
             3: os.path.join('assets', 'sounds', 'fon4.mp3'),
             4: os.path.join('assets', 'sounds', 'fon5.mp3')
         }
+        self.is_misic_pause = False
 
         pygame.mixer.init()
         pygame.mixer.music.load(self.musics[self.index_music])
@@ -177,8 +180,9 @@ class Game:
         if self.start_seconds <= 0:
             self.render_text(size=45, text_x=self.width // 2 - 20, text_y=25,
                              text=f'{self.player1.cnt_goals}-{self.player2.cnt_goals}', color='orange')
-            pygame.mixer.music.unpause()
-            self.ball.update()
+            if self.is_misic_pause:
+                pygame.mixer.music.unpause()
+                self.is_misic_pause = False
 
     def render_text(self, size, text_x, text_y, text, color='red'):
         font = pygame.font.Font(None, size)
@@ -226,6 +230,7 @@ class Game:
         self.start_seconds = 6
         self.ball.rect.x, self.ball.rect.y = (self.width // 2 - self.ball.size // 2,
                                               self.height // 2 - self.ball.size // 2)
+        self.ball.make_move_value()
         player.cnt_goals += 1
         self.player1.rect.x, self.player1.rect.y = self.player1.dict_coords[self.player1.color_name]
         self.player2.rect.x, self.player2.rect.y = self.player2.dict_coords[self.player2.color_name]
@@ -237,6 +242,7 @@ class Game:
 
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         pygame.mixer.music.pause()
+        self.is_misic_pause = True
         self.sound_goal.play()
         pygame.display.flip()
 
@@ -351,16 +357,16 @@ class Game:
             self.cur_color = self.cur_color % len(list(self.colors.keys()))
             self.screen.fill(self.colors[self.cur_color])
 
+            print(3)
             if self.start_seconds <= 0:
-                self.ball_sprites.update()
-                self.player_sprites.update()
-
+                self.all_sprites.update()
+            print(1)
             self.all_sprites.draw(self.screen)
-
+            print(4)
             self.clock.tick(self.fps)
+            print(5)
             self.make_event_start_second()
-
-            pygame.display.flip()
+            print(2)
 
             player_goal = self.check_goal()
             if player_goal:
@@ -369,6 +375,7 @@ class Game:
             if self.check_end_game():
                 self.make_event_end_game()
 
+            pygame.display.flip()
         pygame.quit()
 
 
