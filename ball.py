@@ -7,7 +7,7 @@ import math
 class Ball(pygame.sprite.Sprite):
     def __init__(self, width, height, all_sprites, ball_sprites, sound, wall_sprites, player_sprites):
         super().__init__(all_sprites, ball_sprites)
-        self.size = 35
+        self.size = 32
         self.sound = sound
         self.wall_sprites = wall_sprites
         self.player_sprites = player_sprites
