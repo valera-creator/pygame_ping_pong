@@ -295,7 +295,7 @@ class Game:
                          text_y=self.height // 2 + 200, color='white')
         pygame.mixer.music.pause()
         self.ball.sound.stop()
-        self.sound_winner.play()
+        self.sound_winner.play(-1)
         self.ball.side_move_x = None
         pygame.display.flip()
 
