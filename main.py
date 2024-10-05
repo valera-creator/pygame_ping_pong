@@ -251,6 +251,7 @@ class Game:
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         pygame.mixer.music.pause()
         self.is_misic_pause = True
+        print(f'gooal {self.player1.cnt_goals}-{self.player2.cnt_goals}')
         self.sound_goal.play()
         pygame.display.flip()
 
@@ -372,8 +373,8 @@ class Game:
             self.clock.tick(self.fps)
             self.make_event_start_second()
 
-            print(self.ball.cur_speed_ball, 'ffffff')
-            print(self.ball.angle)
+            # print(self.ball.cur_speed_ball, 'ffffff')
+            # print(self.ball.angle)
 
             player_goal = self.check_goal()
             if player_goal:

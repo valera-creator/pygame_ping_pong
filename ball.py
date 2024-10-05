@@ -30,11 +30,13 @@ class Ball(pygame.sprite.Sprite):
                 if self.cur_speed_ball <= 18:
                     self.cur_speed_ball = round(self.cur_speed_ball + self.update_speed, 3)
                 self.sound.play()
+                break
 
         for elem in self.wall_sprites:
             if pygame.sprite.collide_mask(self, elem):
                 self.dy = -self.dy
                 self.sound.play()
+                break
 
         self.rect = self.rect.move(self.dx * self.cur_speed_ball, self.dy * self.cur_speed_ball)
 
