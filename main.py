@@ -1,10 +1,9 @@
 import pygame
 import os
-import math
+
 from player import Player
 from ball import Ball
 from border import Border
-from random import randint, choice
 
 
 def check_keyboard(event):
@@ -73,21 +72,25 @@ class Game:
         self.horizontal_borders = pygame.sprite.Group()
         self.vertical_borders = pygame.sprite.Group()
 
+        self.color_player1, self.color_player2 = 'blue', 'red'
+
         # мяч, игроки, стенки
         self.ball = Ball(width=self.width, height=self.height, all_sprites=self.all_sprites,
                          ball_sprites=self.ball_sprites, sound=self.sound_rebound, wall_sprites=self.horizontal_borders,
                          player_sprites=self.player_sprites)
         self.player1 = Player(all_sprites=self.all_sprites, player_sprites=self.player_sprites,
-                              color_image='blue', width=self.width, height=self.height,
+                              color_image=self.color_player1, width=self.width, height=self.height,
                               horizontal_borders=self.horizontal_borders)
         self.player2 = Player(all_sprites=self.all_sprites, player_sprites=self.player_sprites,
-                              color_image='red', width=self.width, height=self.height,
+                              color_image=self.color_player2, width=self.width, height=self.height,
                               horizontal_borders=self.horizontal_borders)
 
         x = 56
         y = 70
         delta_x = 4
         delta_y = 5
+
+        self.LEFT, self.RIGHT = -1, 1  # для движения мяча
 
         # x
         Border(all_sprites=self.all_sprites, horizontal_borders=self.horizontal_borders,
@@ -224,6 +227,7 @@ class Game:
         установление позиций для мяча и игроков
         отмена движений у игроков
         изменение времени и взаимодействие со звуком/музыкой
+        изменение на стандарнтное значение скорости мяча
         :param player: объектное представление игрока для увеличение счетчика гола
         """
 
@@ -232,6 +236,9 @@ class Game:
                                               self.height // 2 - self.ball.size // 2)
         self.ball.make_move_value()
         player.cnt_goals += 1
+        self.ball.side_move_x = self.LEFT if player.color_name == 'red' else self.RIGHT
+        self.ball.make_move_value()
+
         self.player1.rect.x, self.player1.rect.y = self.player1.dict_coords[self.player1.color_name]
         self.player2.rect.x, self.player2.rect.y = self.player2.dict_coords[self.player2.color_name]
         self.player1.need_go = False
@@ -239,6 +246,7 @@ class Game:
         self.player1.up = self.player1.down = False
         self.player2.up = self.player2.down = False
         self.player1.click = self.player2.click = False
+        self.ball.cur_speed_ball = self.ball.speed_default
 
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         pygame.mixer.music.pause()
@@ -286,6 +294,7 @@ class Game:
                          text_y=self.height // 2 + 200, color='white')
         pygame.mixer.music.pause()
         self.sound_winner.play()
+        self.ball.side_move_x = None
         pygame.display.flip()
 
         while True:
@@ -357,16 +366,14 @@ class Game:
             self.cur_color = self.cur_color % len(list(self.colors.keys()))
             self.screen.fill(self.colors[self.cur_color])
 
-            print(3)
             if self.start_seconds <= 0:
                 self.all_sprites.update()
-            print(1)
             self.all_sprites.draw(self.screen)
-            print(4)
             self.clock.tick(self.fps)
-            print(5)
             self.make_event_start_second()
-            print(2)
+
+            print(self.ball.cur_speed_ball, 'ffffff')
+            print(self.ball.angle)
 
             player_goal = self.check_goal()
             if player_goal:

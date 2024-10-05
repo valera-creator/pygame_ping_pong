@@ -24,8 +24,8 @@ class Player(pygame.sprite.Sprite):
         self.click = False
 
         self.dict_coords = {
-            'blue': (self.width // 2 - self.width // 4 - 120 - self.size // 2, self.height // 2 - self.size // 2),
-            'red': (self.width // 2 + self.width // 4 + 50, self.height // 2 - self.size // 2)
+            'blue': (self.width // 2 - self.width // 4 - 140 - self.size // 2, self.height // 2 - self.size // 2),
+            'red': (self.width // 2 + self.width // 4 + 70, self.height // 2 - self.size // 2)
         }
 
         self.rect.x, self.rect.y = self.dict_coords[self.color_name]
