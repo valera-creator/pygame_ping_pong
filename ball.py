@@ -20,7 +20,7 @@ class Ball(pygame.sprite.Sprite):
         self.cur_speed_ball = 6
         self.update_speed = 0.15
         self.speed_default = 6
-        self.max_speed = 18
+        self.max_speed = 15
         self.dx = self.dy = self.angle = 0
         self.make_move_value()
 
@@ -40,8 +40,7 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.rect.move(self.dx * self.cur_speed_ball, self.dy * self.cur_speed_ball)
 
     def make_move_value(self):
-        self.angle = random.choice(list(range(20, 45)) + list(range(55, 65)))
-
+        self.angle = random.randint(20, 45)
         if self.side_move_x is None:
             self.dx = math.cos(math.radians(self.angle)) * random.choice((-1, 1))
         else:
