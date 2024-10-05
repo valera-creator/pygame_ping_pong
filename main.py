@@ -251,7 +251,7 @@ class Game:
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         pygame.mixer.music.pause()
         self.is_misic_pause = True
-        print(f'gooal {self.player1.cnt_goals}-{self.player2.cnt_goals}')
+        self.ball.sound.stop()
         self.sound_goal.play()
         pygame.display.flip()
 
@@ -294,6 +294,7 @@ class Game:
         self.render_text(size=35, text='НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ', text_x=self.width // 2 - 320,
                          text_y=self.height // 2 + 200, color='white')
         pygame.mixer.music.pause()
+        self.ball.sound.stop()
         self.sound_winner.play()
         self.ball.side_move_x = None
         pygame.display.flip()

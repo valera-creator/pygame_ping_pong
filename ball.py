@@ -20,6 +20,7 @@ class Ball(pygame.sprite.Sprite):
         self.cur_speed_ball = 6
         self.update_speed = 0.35
         self.speed_default = 6
+        self.max_speed = 18
         self.dx = self.dy = self.angle = 0
         self.make_move_value()
 
@@ -27,7 +28,7 @@ class Ball(pygame.sprite.Sprite):
         for elem in self.player_sprites:
             if pygame.sprite.collide_mask(self, elem):
                 self.dx = -self.dx
-                if self.cur_speed_ball <= 18:
+                if self.cur_speed_ball <= self.max_speed:
                     self.cur_speed_ball = round(self.cur_speed_ball + self.update_speed, 3)
                 self.sound.play()
                 break
