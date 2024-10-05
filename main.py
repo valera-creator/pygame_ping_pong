@@ -59,11 +59,12 @@ class Game:
         pygame.mixer.music.play(-1)
 
         pygame.display.set_caption('PING-PONG game')
-        pygame.time.set_timer(pygame.USEREVENT, 600)
+        pygame.time.set_timer(pygame.USEREVENT, 800)
 
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.running = True
         self.clock = pygame.time.Clock()
+        self.clock_speed_ball = pygame.time.Clock()
 
         # спрайты
         self.all_sprites = pygame.sprite.Group()
@@ -265,7 +266,6 @@ class Game:
         изменение таймера и отмена звука гола (вместо нее будет звук победы)
         отрисовка спрайтов, надписи побителя
         окно победы и ожидание дальнейших действий от игроков
-
         """
 
         self.player1.need_go = False
@@ -364,6 +364,9 @@ class Game:
 
                 if event.type == pygame.USEREVENT and self.start_seconds >= 0:
                     self.start_seconds -= 1
+                if event.type == pygame.USEREVENT and self.start_seconds < 0:
+                    if round(self.ball.cur_speed_ball + self.ball.update_speed, 3) < self.ball.max_speed:
+                        self.ball.cur_speed_ball = round(self.ball.cur_speed_ball + self.ball.update_speed, 3)
 
             self.cur_color = self.cur_color % len(list(self.colors.keys()))
             self.screen.fill(self.colors[self.cur_color])
@@ -373,9 +376,6 @@ class Game:
             self.all_sprites.draw(self.screen)
             self.clock.tick(self.fps)
             self.make_event_start_second()
-
-            # print(self.ball.cur_speed_ball, 'ffffff')
-            # print(self.ball.angle)
 
             player_goal = self.check_goal()
             if player_goal:
