@@ -43,18 +43,22 @@ class Game:
         self.sound_rebound = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'rebound.mp3'))
         self.sound_rebound.set_volume(0.20)
 
-        self.index_music = 2
+        self.cur_index_music = 2
         self.musics = {
             0: os.path.join('assets', 'sounds', 'fon1.mp3'),
             1: os.path.join('assets', 'sounds', 'fon2.mp3'),
             2: os.path.join('assets', 'sounds', 'fon3.mp3'),
             3: os.path.join('assets', 'sounds', 'fon4.mp3'),
-            4: os.path.join('assets', 'sounds', 'fon5.mp3')
+            4: os.path.join('assets', 'sounds', 'fon5.mp3'),
+            5: os.path.join('assets', 'sounds', 'fon6.mp3'),
+            6: os.path.join('assets', 'sounds', 'fon7.mp3'),
+            7: os.path.join('assets', 'sounds', 'fon8.mp3'),
+            8: os.path.join('assets', 'sounds', 'fon9.mp3'),
         }
         self.is_misic_pause = False
 
         pygame.mixer.init()
-        pygame.mixer.music.load(self.musics[self.index_music])
+        pygame.mixer.music.load(self.musics[self.cur_index_music])
         pygame.mixer.music.set_volume(self.music_volume)
         pygame.mixer.music.play(-1)
 
@@ -332,12 +336,12 @@ class Game:
         """
 
         if btn == 1:
-            self.index_music = (self.index_music + 1) % len(list(self.musics.keys()))
-            pygame.mixer.music.load(self.musics[self.index_music])
+            self.cur_index_music = (self.cur_index_music + 1) % len(list(self.musics.keys()))
+            pygame.mixer.music.load(self.musics[self.cur_index_music])
             pygame.mixer.music.play(-1)
         elif btn == 3:
-            self.index_music = (self.index_music - 1) % len(list(self.musics.keys()))
-            pygame.mixer.music.load(self.musics[self.index_music])
+            self.cur_index_music = (self.cur_index_music - 1) % len(list(self.musics.keys()))
+            pygame.mixer.music.load(self.musics[self.cur_index_music])
             pygame.mixer.music.play(-1)
 
     def run(self):
