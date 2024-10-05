@@ -1,5 +1,6 @@
 import pygame
 import os
+
 from player import Player
 from ball import Ball
 from border import Border
@@ -50,6 +51,7 @@ class Game:
             3: os.path.join('assets', 'sounds', 'fon4.mp3'),
             4: os.path.join('assets', 'sounds', 'fon5.mp3')
         }
+        self.is_misic_pause = False
 
         pygame.mixer.init()
         pygame.mixer.music.load(self.musics[self.index_music])
@@ -57,11 +59,12 @@ class Game:
         pygame.mixer.music.play(-1)
 
         pygame.display.set_caption('PING-PONG game')
-        pygame.time.set_timer(pygame.USEREVENT, 600)
+        pygame.time.set_timer(pygame.USEREVENT, 800)
 
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.running = True
         self.clock = pygame.time.Clock()
+        self.clock_speed_ball = pygame.time.Clock()
 
         # спрайты
         self.all_sprites = pygame.sprite.Group()
@@ -70,20 +73,25 @@ class Game:
         self.horizontal_borders = pygame.sprite.Group()
         self.vertical_borders = pygame.sprite.Group()
 
+        self.color_player1, self.color_player2 = 'blue', 'red'
+
         # мяч, игроки, стенки
         self.ball = Ball(width=self.width, height=self.height, all_sprites=self.all_sprites,
-                         ball_sprites=self.ball_sprites)
+                         ball_sprites=self.ball_sprites, sound=self.sound_rebound, wall_sprites=self.horizontal_borders,
+                         player_sprites=self.player_sprites)
         self.player1 = Player(all_sprites=self.all_sprites, player_sprites=self.player_sprites,
-                              color_image='blue', width=self.width, height=self.height,
+                              color_image=self.color_player1, width=self.width, height=self.height,
                               horizontal_borders=self.horizontal_borders)
         self.player2 = Player(all_sprites=self.all_sprites, player_sprites=self.player_sprites,
-                              color_image='red', width=self.width, height=self.height,
+                              color_image=self.color_player2, width=self.width, height=self.height,
                               horizontal_borders=self.horizontal_borders)
 
         x = 56
         y = 70
         delta_x = 4
         delta_y = 5
+
+        self.LEFT, self.RIGHT = -1, 1  # для движения мяча
 
         # x
         Border(all_sprites=self.all_sprites, horizontal_borders=self.horizontal_borders,
@@ -176,8 +184,9 @@ class Game:
         if self.start_seconds <= 0:
             self.render_text(size=45, text_x=self.width // 2 - 20, text_y=25,
                              text=f'{self.player1.cnt_goals}-{self.player2.cnt_goals}', color='orange')
-            pygame.mixer.music.unpause()
-            self.ball.update()
+            if self.is_misic_pause:
+                pygame.mixer.music.unpause()
+                self.is_misic_pause = False
 
     def render_text(self, size, text_x, text_y, text, color='red'):
         font = pygame.font.Font(None, size)
@@ -219,13 +228,18 @@ class Game:
         установление позиций для мяча и игроков
         отмена движений у игроков
         изменение времени и взаимодействие со звуком/музыкой
+        изменение на стандарнтное значение скорости мяча
         :param player: объектное представление игрока для увеличение счетчика гола
         """
 
         self.start_seconds = 6
         self.ball.rect.x, self.ball.rect.y = (self.width // 2 - self.ball.size // 2,
                                               self.height // 2 - self.ball.size // 2)
+        self.ball.make_move_value()
         player.cnt_goals += 1
+        self.ball.side_move_x = self.LEFT if player.color_name == 'red' else self.RIGHT
+        self.ball.make_move_value()
+
         self.player1.rect.x, self.player1.rect.y = self.player1.dict_coords[self.player1.color_name]
         self.player2.rect.x, self.player2.rect.y = self.player2.dict_coords[self.player2.color_name]
         self.player1.need_go = False
@@ -233,9 +247,12 @@ class Game:
         self.player1.up = self.player1.down = False
         self.player2.up = self.player2.down = False
         self.player1.click = self.player2.click = False
+        self.ball.cur_speed_ball = self.ball.speed_default
 
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         pygame.mixer.music.pause()
+        self.is_misic_pause = True
+        self.ball.sound.stop()
         self.sound_goal.play()
         pygame.display.flip()
 
@@ -249,7 +266,6 @@ class Game:
         изменение таймера и отмена звука гола (вместо нее будет звук победы)
         отрисовка спрайтов, надписи побителя
         окно победы и ожидание дальнейших действий от игроков
-
         """
 
         self.player1.need_go = False
@@ -278,7 +294,9 @@ class Game:
         self.render_text(size=35, text='НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ', text_x=self.width // 2 - 320,
                          text_y=self.height // 2 + 200, color='white')
         pygame.mixer.music.pause()
+        self.ball.sound.stop()
         self.sound_winner.play()
+        self.ball.side_move_x = None
         pygame.display.flip()
 
         while True:
@@ -346,16 +364,18 @@ class Game:
 
                 if event.type == pygame.USEREVENT and self.start_seconds >= 0:
                     self.start_seconds -= 1
+                if event.type == pygame.USEREVENT and self.start_seconds < 0:
+                    if round(self.ball.cur_speed_ball + self.ball.update_speed, 3) < self.ball.max_speed:
+                        self.ball.cur_speed_ball = round(self.ball.cur_speed_ball + self.ball.update_speed, 3)
 
             self.cur_color = self.cur_color % len(list(self.colors.keys()))
             self.screen.fill(self.colors[self.cur_color])
-            self.player_sprites.update()
-            self.all_sprites.draw(self.screen)
 
+            if self.start_seconds <= 0:
+                self.all_sprites.update()
+            self.all_sprites.draw(self.screen)
             self.clock.tick(self.fps)
             self.make_event_start_second()
-
-            pygame.display.flip()
 
             player_goal = self.check_goal()
             if player_goal:
@@ -364,6 +384,7 @@ class Game:
             if self.check_end_game():
                 self.make_event_end_game()
 
+            pygame.display.flip()
         pygame.quit()
 
 
