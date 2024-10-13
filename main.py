@@ -25,18 +25,18 @@ class Game:
         self.colors = {0: 'black', 1: 'red', 2: 'blue', 3: 'green', 4: 'orange', 5: 'fuchsia', 6: 'white'}
         self.cur_color = 0
         self.start_seconds = 3  # задержка при начале раунда
-        self.goal_end = 5
+        self.goal_end = 3
 
         # звук гола
         self.sound_goal = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'goal.mp3'))
-        self.sound_goal.set_volume(0.15)
+        self.sound_goal.set_volume(0.01)
 
         # звук победы
         self.sound_winner = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'winner.mp3'))
-        self.sound_winner.set_volume(0.35)
+        self.sound_winner.set_volume(0.25)
 
         # музыка на фон
-        self.music_volume = 0.05
+        self.music_volume = 0.03
         self.step_volume_music = 0.025
 
         # звук удара мяча
@@ -130,17 +130,21 @@ class Game:
         text_middle = ['НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ']
         intro_text = [
             "ЦЕЛЬ:",
-            f"{self.goal_end} ГОЛОВ",
+            f"{self.goal_end} ГОЛА",
             "",
-            "Правила игры:",
+            "Правила игры:".upper(),
             "1) ЗАБИТЬ ГОЛ ПРОТИВНИКУ",
             "2) НАСЛАЖДАТЬСЯ ИГРОЙ",
+            "",
+            "Настройки:".upper(),
+            "Для настройки звука во время игры прокрутите колесико мыши".upper(),
+            "Для смены музыки во время игры нажмите ПКМ".upper(),
             "",
             "",
             "Авторы:",
             "Ларионов Валерий",
             "Зайцев Максим",
-            "", "", "", "", "", "",  # 6 пустых строк
+            "", "", "", "",  # 4 пустые строк
             "НАЖМИТЕ ЛЮБУЮ КЛАВИШУ, ЧТОБЫ ПРОДОЛЖИТЬ"
         ]
 
